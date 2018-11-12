@@ -4,12 +4,12 @@ import os
 import io
 import subprocess
 
-def _is_git_repo(path):
+def _is_git_repo(path:str):
     repo = os.path.join(os.path.abspath(path), '.git')
     return os.path.isdir(repo)
 
 
-def get_remote(repo_path):
+def get_remote(repo_path:str):
     """
     @return: remote url of the git repository
     """
@@ -25,10 +25,10 @@ def get_remote(repo_path):
     return remote_url
 
 
-def update_remote(repo_path, new_repo_url, remote='origin'):
+def update_remote(repo_path:str, new_repo_url:str, remote:str='origin'):
     """
     """
-    cmd = 'git -C %s remote set-url "%s"' %(repo_path, new_repo_url)
+    cmd = 'git -C "%s" remote set-url "%s"' %(repo_path, new_repo_url)
     try:
         retcode = subprocess.call(cmd, shell=True)
     except Exception as e:
