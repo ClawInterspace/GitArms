@@ -4,12 +4,13 @@ import os
 import io
 import subprocess
 
-def _is_git_repo(path:str):
+
+def _is_git_repo(path: str):
     repo = os.path.join(os.path.abspath(path), '.git')
     return os.path.isdir(repo)
 
 
-def get_remote(repo_path:str):
+def get_remote(repo_path: str):
     """
     @return: remote url of the git repository
     """
@@ -18,6 +19,7 @@ def get_remote(repo_path:str):
         result = subprocess.check_output(cmd, shell=True)
     except:
         raise Exception('Get remote %s error' % repo_path)
+
     output = result[0]
     lines = io.StringIO(output.decode('utf-8')).readlines()
     remote_url = lines[0].split()[1]
@@ -25,15 +27,17 @@ def get_remote(repo_path:str):
     return remote_url
 
 
-def update_remote(repo_path:str, new_repo_url:str, remote:str='origin'):
+def update_remote(repo_path: str, new_repo_url: str, remote: str = 'origin'):
     """
     """
-    cmd = 'git -C "%s" remote set-url "%s"' %(repo_path, new_repo_url)
+    cmd = 'git -C "%s" remote set-url "%s"' % (repo_path, new_repo_url)
     try:
-        retcode = subprocess.call(cmd, shell=True)
-    except Exception as e:
-        logging.error('Update "%s" fail under "%s"' %(new_repo_url, repo_path))
-    
+        subprocess.call(cmd, shell=True)
+    except Exception:
+        logging.error('Update "%s" fail under "%s"' %
+                      (new_repo_url, repo_path))
+        raise
+
 
 if __name__ == '__main__':
     pass
